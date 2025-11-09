@@ -12,7 +12,9 @@ pub fn command<'a>() -> ap::CmdSpec<'a, super::Context> {
     ap::CmdSpec::new(
         Some("kill"),
         Some(|_, _ctx: &mut super::Context| {
-            unimplemented!();
+            use splicer::server::window::WindowId;
+            println!("window id: {}", WindowId::new(99887).unwrap());
+            Ok(())
         }),
     )
     .desc("Destroy a session/window/pane")
