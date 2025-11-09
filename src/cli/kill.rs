@@ -13,7 +13,11 @@ pub fn command<'a>() -> ap::CmdSpec<'a, super::Context> {
         Some("kill"),
         Some(|_, _ctx: &mut super::Context| {
             use splicer::server::window::WindowId;
-            println!("window id: {}", WindowId::new(99887).unwrap());
+            let mut alloc = splicer::server::IdAllocator::default();
+            for _ in 2000..3000 {
+                let win_id = alloc.allocate(WindowId::new);
+                println!("window id: {}", win_id);
+            }
             Ok(())
         }),
     )
