@@ -15,4 +15,4 @@ rust-args-parser = "0.4.1"
 rustix = { version = "1.1.2", features = ["process"] }
 rustlog = "0.3.1"
 serde = { version = "1.0.228", features = ["derive"] }
-tokio = { version = "1.48.0", features = ["rt-multi-thread", "macros", "signal", "process"] }
+tokio = { version = "1.48.0", features = ["rt-multi-thread", "macros", "signal", "process", "sync", "time"] }
