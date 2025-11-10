@@ -2,6 +2,7 @@ pub mod pane;
 pub mod peer;
 pub mod session;
 pub mod window;
+pub mod state;
 
 #[derive(Default)]
 pub struct IdAllocator {

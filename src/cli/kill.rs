@@ -1,4 +1,6 @@
 use rust_args_parser as ap;
+use splicer::server::pane::TermSize;
+use splicer::server::state::ServerState;
 
 #[derive(Default)]
 pub struct KillContext {
@@ -20,6 +22,13 @@ pub fn command<'a>() -> ap::CmdSpec<'a, super::Context> {
                 let win = splicer::server::window::Window::new(win_id, "test");
                 println!("window: {}", win);
             }
+
+            let mut st = ServerState::new();
+            let sid = st.new_session("work");
+            let wid = st.new_window(sid, "main")?;
+            let pid = st.new_pane(sid, wid, "shell", TermSize::new(120, 34))?;
+            println!("state: {}; sid={}; wid={}; pid={}", st, sid, wid, pid);
+
             Ok(())
         }),
     )
