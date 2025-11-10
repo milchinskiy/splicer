@@ -1,13 +1,11 @@
 macro_rules! id_newtype {
     ($name:ident) => {
-        use core::num::NonZeroU64;
-
         #[repr(transparent)]
-        #[derive(Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize, Debug)]
-        pub struct $name(NonZeroU64);
+        #[derive(Clone, Copy, PartialEq, PartialOrd, Ord, Eq, Hash, serde::Serialize, serde::Deserialize, Debug)]
+        pub struct $name(core::num::NonZeroU64);
         impl $name {
             pub fn new(raw: u64) -> Option<Self> {
-                NonZeroU64::new(raw).map(Self)
+                core::num::NonZeroU64::new(raw).map(Self)
             }
             pub fn get(self) -> u64 {
                 self.0.get()

@@ -42,3 +42,18 @@ impl From<std::num::TryFromIntError> for Error {
         Self::InvalidState(e.to_string())
     }
 }
+
+impl From<crate::pty::PtyError> for Error {
+    fn from(e: crate::pty::PtyError) -> Self {
+        use crate::pty::PtyError::*;
+        match e {
+            Io(io) => Self::Io(io),
+            InvalidArgs(msg) => Self::InvalidState(msg.into()),
+            OpenFailed => Self::Pty("openpty() failed".into()),
+            SpawnFailed => Self::Pty("spawn failed".into()),
+            ResizeFailed => Self::Pty("resize failed".into()),
+            WaitFailed => Self::Pty("wait failed".into()),
+            Unsupported => Self::Pty("unsupported PTY op".into()),
+        }
+    }
+}

@@ -14,9 +14,11 @@ pub fn command<'a>() -> ap::CmdSpec<'a, super::Context> {
         Some(|_, _ctx: &mut super::Context| {
             use splicer::server::window::WindowId;
             let mut alloc = splicer::server::IdAllocator::default();
-            for _ in 2000..3000 {
+            for _ in 2000..2005 {
                 let win_id = alloc.allocate(WindowId::new);
                 println!("window id: {}", win_id);
+                let win = splicer::server::window::Window::new(win_id, "test");
+                println!("window: {}", win);
             }
             Ok(())
         }),
