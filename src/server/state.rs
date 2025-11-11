@@ -1,5 +1,6 @@
 use super::{
     pane::{Pane, PaneId, TermSize},
+    peer::{Peer, PeerId},
     session::{Session, SessionId},
     window::{Window, WindowId},
 };
@@ -12,17 +13,19 @@ pub struct Allocators {
     session: IdAllocator,
     window: IdAllocator,
     pane: IdAllocator,
+    peer: IdAllocator,
 }
 
 #[derive(Default)]
 pub struct ServerState {
     allocs: Allocators,
     sessions: BTreeMap<SessionId, Session>,
+    peers: BTreeMap<PeerId, Peer>,
 }
 
 impl std::fmt::Display for ServerState {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "<ServerState sessions={}>", self.sessions.len())
+        write!(f, "<ServerState sessions={} peers={}>", self.sessions.len(), self.peers.len())
     }
 }
 
@@ -47,6 +50,12 @@ impl ServerState {
         let w = Window::new(id, name);
         self.add_window(sid, w)?;
         Ok(id)
+    }
+
+    pub fn new_peer(&mut self, name: impl Into<String>) -> PeerId {
+        let id = self.allocs.peer.allocate(PeerId::new);
+        self.peers.insert(id, Peer::new(id, name));
+        id
     }
 
     pub fn add_pane(&mut self, sid: SessionId, wid: WindowId, pane: Pane) -> Result<()> {
@@ -76,5 +85,12 @@ impl ServerState {
     }
     pub fn sessions(&self) -> impl Iterator<Item = (&SessionId, &Session)> {
         self.sessions.iter()
+    }
+
+    pub fn peer(&self, id: PeerId) -> Option<&Peer> {
+        self.peers.get(&id)
+    }
+    pub fn peers(&self) -> impl Iterator<Item = (&PeerId, &Peer)> {
+        self.peers.iter()
     }
 }
