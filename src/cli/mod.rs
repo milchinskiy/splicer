@@ -61,7 +61,8 @@ pub fn run() -> splicer::Result {
             .help("Socket path")
             .default(&socket_path)
             .required()
-            .metavar("PATH"),
+            .metavar("PATH")
+            .env("SPLICER_SOCKET"),
         ]);
 
     match ap::dispatch(&env, &root, &argv, &mut ctx) {
