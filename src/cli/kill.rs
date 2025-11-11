@@ -1,6 +1,5 @@
 use rust_args_parser as ap;
-use splicer::server::pane::TermSize;
-use splicer::server::state::ServerState;
+use splicer::server::{pane::TermSize, state::ServerState};
 
 #[derive(Default)]
 pub struct KillContext {
